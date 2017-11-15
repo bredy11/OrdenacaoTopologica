@@ -32,8 +32,8 @@ public class MainController {
                                    
 		d.digraphInsertAList(11, 12,1 );
 		
-		OrdenadorTopologico ordenadorTopologico = new OrdenadorTopologico(13);
-		ordenadorTopologico.dfs(d, 8);
+		OrdenadorTopologico ordenadorTopologico = new OrdenadorTopologico();
+		ordenadorTopologico.ordenarTopologico(d, 8);
 
 	}
 }
