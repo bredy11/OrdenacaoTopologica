@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import model.bens.Aresta;
 import model.bens.Digraph;
@@ -11,6 +12,8 @@ public class OrdenadorTopologico {
 	private int cont;
 	private List<List<Aresta>> ordenado = new ArrayList<>();
 
+	private Stack<Integer> visitacao = new Stack<>();
+	
 	public OrdenadorTopologico(int grafoTamanho) {
 
 		pre = new int[grafoTamanho];
@@ -43,9 +46,18 @@ public class OrdenadorTopologico {
 
 	private void DFSRecursivo(Digraph g, List<Aresta> list, int v) {
 		int w;
+		
 		pre[v] = cont++; // (pega valor, depois incrementa)
+		
 		for (w = 0; w < list.size(); w++) {
-			Integer verticeAntecessor = verificarLigaçoesComOVertece(list.get(w).getX(), g);
+			Integer verticeAntecessor =null;
+			if(visitacao.size()!=0 && visitacao.get(visitacao.size()-1)==list.get(w).getX()){
+				continue;
+			}else{
+				verticeAntecessor = verificarLigaçoesComOVertece(list.get(w).getX(), g);
+			}
+			
+			 visitacao.push(list.get(w).getX());
 			if (verticeAntecessor != null) {
 				list = g.adjList.get(verticeAntecessor);
 				DFSRecursivo(g, list, verticeAntecessor);
@@ -64,7 +76,7 @@ public class OrdenadorTopologico {
 
 	private Integer verificarLigaçoesComOVertece(int x, Digraph d) {
 		for (int i = 0; i < d.adj.length; i++) {
-			if (d.adj[i][x] != null && pre[i]==-1) {
+			if (d.adj[i][x] != null && pre[i]==-1 ) {
 				System.out.println(i);
 				return i;
 			}
